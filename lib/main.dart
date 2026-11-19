@@ -300,6 +300,13 @@ class AttendanceScreen extends StatelessWidget {
 
                 final percentage = student.percentage;
                 final eligible = percentage >= 75;
+                // 0 recorded classes is "no data", not a 0% shortage.
+                final hasRecords = student.totalClasses > 0;
+                final statusColor = !hasRecords
+                    ? Colors.grey.shade600
+                    : eligible
+                        ? Colors.green
+                        : Colors.red;
 
                 return Card(
                   margin: const EdgeInsets.symmetric(
@@ -365,9 +372,7 @@ class AttendanceScreen extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
-                                color: eligible
-                                    ? Colors.green
-                                    : Colors.red,
+                                color: statusColor,
                               ),
                             ),
                           ],
@@ -379,9 +384,7 @@ class AttendanceScreen extends StatelessWidget {
                           value: percentage / 100,
                           minHeight: 10,
                           backgroundColor: Colors.grey.shade300,
-                          color: eligible
-                              ? Colors.green
-                              : Colors.red,
+                          color: statusColor,
                         ),
 
                         const SizedBox(height: 15),
@@ -450,14 +453,14 @@ class AttendanceScreen extends StatelessWidget {
                               MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              eligible
-                                  ? 'Eligible (75%+)'
-                                  : 'Attendance Shortage',
+                              !hasRecords
+                                  ? 'No classes recorded yet'
+                                  : eligible
+                                      ? 'Eligible (75%+)'
+                                      : 'Attendance Shortage',
 
                               style: TextStyle(
-                                color: eligible
-                                    ? Colors.green
-                                    : Colors.red,
+                                color: statusColor,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
