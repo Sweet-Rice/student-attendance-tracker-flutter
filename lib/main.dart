@@ -57,6 +57,15 @@ class AttendanceProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Records one class for every student, all present (one-tap roll call).
+  void markAllPresent() {
+    for (final student in _students) {
+      student.totalClasses++;
+      student.presentClasses++;
+    }
+    notifyListeners();
+  }
+
   void resetStudent(int index) {
     _students[index].totalClasses = 0;
     _students[index].presentClasses = 0;
@@ -149,6 +158,29 @@ class AttendanceScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.indigo,
         centerTitle: true,
+        actions: [
+          IconButton(
+            tooltip: 'Mark all present',
+            color: Colors.white,
+            icon: const Icon(Icons.done_all),
+            onPressed: provider.students.isEmpty
+                ? null
+                : () {
+                    provider.markAllPresent();
+                    final count = provider.totalStudents;
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Marked $count student${count == 1 ? '' : 's'} present',
+                          ),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                  },
+          ),
+        ],
       ),
 
       floatingActionButton: FloatingActionButton(

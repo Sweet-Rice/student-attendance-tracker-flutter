@@ -7,6 +7,7 @@ A clean, responsive Material 3 Flutter app for recording student and subject att
 - Add students and remove students with confirmation.
 - Add subjects to each student; empty student and subject names are rejected with validation messages.
 - Mark each class Present or Absent, with percentages updated immediately.
+- Mark the whole class present in one tap with the **Mark all present** (✓✓) action in the app bar.
 - Correct Present and Total class counts for existing records.
 - View each student's subject-wise and overall attendance, plus a dashboard-wide overall rate.
 - Show a shortage warning when recorded attendance falls below 75%.
